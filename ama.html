@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>¿Preunta...?</title>
+    <title>¿Pregunta...?</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Evita el scroll accidental */
             touch-action: manipulation;
         }
 
@@ -21,16 +20,16 @@
             height: 100vh;
             background-color: #ffe6e6;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* No permite que nada se salga de la vista */
+            overflow: hidden;
             text-align: center;
             position: relative;
         }
 
         h1 { 
             color: #d63384; 
-            margin-bottom: 20px;
+            margin: 20px;
             position: relative;
-            z-index: 1; /* Para que el texto no tape al botón gigante */
+            z-index: 1;
         }
 
         .contenedor-botones {
@@ -54,7 +53,7 @@
         #si {
             background-color: #28a745;
             color: white;
-            z-index: 10; /* Siempre por encima del botón NO */
+            z-index: 10;
         }
 
         #no {
@@ -80,21 +79,33 @@
 
         let fontSizeSi = 18;
         let paddingSi = 15;
+        let indiceFrase = 0;
 
-        btnNo.addEventListener('click', (e) => {
-            // Aumentar tamaño agresivamente para móviles
-            fontSizeSi += 25; 
-            paddingSi += 20;
-            
-            btnSi.style.fontSize = fontSizeSi + 'px';
-            btnSi.style.padding = paddingSi + 'px';
+        // Lista de frases en orden
+        const frasesNo = [
+            "¿Segura? 🥺", 
+            "Piénsalo bien...", 
+            "¡Oye!", 
+            "¡Di que sí!", 
+            "Ándale di que sí", 
+            "¡No puedes decir que no!",
+            "Última oportunidad... 🙄"
+        ];
 
-            // Cambiar textos del botón NO
-            const frasesNo = ["¿Segura? 🥺", "Piénsalo...", "¡Oye!", "¡Di que sí!", "Andale di que si", "No puedes decir que no!!"];
-            btnNo.innerText = frasesNo[Math.floor(Math.random() * frasesNo.length)];
-            
-            // Si el botón crece mucho, podemos moverlo al centro absoluto
-            if (fontSizeSi > 100) {
+        btnNo.addEventListener('click', () => {
+            if (indiceFrase < frasesNo.length) {
+                // 1. Mostrar las frases una por una
+                btnNo.innerText = frasesNo[indiceFrase];
+                
+                // 2. Crecer un poco en cada clic
+                fontSizeSi += 15;
+                paddingSi += 10;
+                btnSi.style.fontSize = fontSizeSi + 'px';
+                btnSi.style.padding = paddingSi + 'px';
+                
+                indiceFrase++;
+            } else {
+                // 3. Cuando se acaban las frases, se vuelve gigante
                 btnSi.style.position = "absolute";
                 btnSi.style.top = "50%";
                 btnSi.style.left = "50%";
@@ -105,21 +116,12 @@
                 btnSi.style.alignItems = "center";
                 btnSi.style.justifyContent = "center";
                 btnSi.style.borderRadius = "0";
+                btnSi.innerText = "¡SÍ! 😍";
+                btnNo.style.display = "none"; // Desaparece el NO
             }
         });
 
         btnSi.addEventListener('click', () => {
-            pregunta.style.display = "none";
-            btnNo.style.display = "none";
-            
-            // Resetear estilos por si se volvió gigante
-            btnSi.style.position = "relative";
-            btnSi.style.top = "0";
-            btnSi.style.left = "0";
-            btnSi.style.transform = "none";
-            btnSi.style.width = "auto";
-            btnSi.style.height = "auto";
-            
             document.body.innerHTML = `
                 <h1 style="font-size: 40px;">¡SABÍA QUE DIRÍAS QUE SÍ! 😈❤️</h1>
                 <div style="font-size: 80px;">😇</div>
@@ -128,7 +130,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
