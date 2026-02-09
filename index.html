@@ -2,9 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>¿Quieres ser mi novia?</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Evita el scroll accidental */
+            touch-action: manipulation;
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -13,16 +21,24 @@
             height: 100vh;
             background-color: #ffe6e6;
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* No permite que nada se salga de la vista */
             text-align: center;
+            position: relative;
         }
 
-        h1 { color: #d63384; }
+        h1 { 
+            color: #d63384; 
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1; /* Para que el texto no tape al botón gigante */
+        }
 
-        .botones {
+        .contenedor-botones {
             display: flex;
             gap: 20px;
             align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         button {
@@ -32,16 +48,19 @@
             border: none;
             border-radius: 10px;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         #si {
             background-color: #28a745;
             color: white;
+            z-index: 10; /* Siempre por encima del botón NO */
         }
 
         #no {
             background-color: #dc3545;
             color: white;
+            z-index: 5;
         }
     </style>
 </head>
@@ -49,7 +68,7 @@
 
     <h1 id="pregunta">¿Quieres ser mi novia? ❤️</h1>
     
-    <div class="botones">
+    <div class="contenedor-botones">
         <button id="si">SÍ</button>
         <button id="no">NO</button>
     </div>
@@ -62,25 +81,50 @@
         let fontSizeSi = 18;
         let paddingSi = 15;
 
-        btnNo.addEventListener('click', () => {
-            // Aumentar tamaño del botón SÍ
-            fontSizeSi += 15;
-            paddingSi += 10;
+        btnNo.addEventListener('click', (e) => {
+            // Aumentar tamaño agresivamente para móviles
+            fontSizeSi += 25; 
+            paddingSi += 20;
             
             btnSi.style.fontSize = fontSizeSi + 'px';
             btnSi.style.padding = paddingSi + 'px';
 
-            // Opcional: Cambiar el texto del botón NO para hacerlo más divertido
-            const frasesNo = ["¿Estás segura?", "Piénsalo bien...", "¡Oye! 🥺", "Me vas a romper el corazón", "Di que síii"];
+            // Cambiar textos del botón NO
+            const frasesNo = ["¿Segura? 🥺", "Piénsalo...", "¡Oye!", "¡Di que sí!", "No te dejaré ir"];
             btnNo.innerText = frasesNo[Math.floor(Math.random() * frasesNo.length)];
+            
+            // Si el botón crece mucho, podemos moverlo al centro absoluto
+            if (fontSizeSi > 100) {
+                btnSi.style.position = "absolute";
+                btnSi.style.top = "50%";
+                btnSi.style.left = "50%";
+                btnSi.style.transform = "translate(-50%, -50%)";
+                btnSi.style.width = "100vw";
+                btnSi.style.height = "100vh";
+                btnSi.style.display = "flex";
+                btnSi.style.alignItems = "center";
+                btnSi.style.justifyContent = "center";
+                btnSi.style.borderRadius = "0";
+            }
         });
 
         btnSi.addEventListener('click', () => {
-            pregunta.innerText = "¡SABÍA QUE DIRÍAS QUE SÍ! 😍❤️";
-            document.body.style.backgroundColor = "#ffb3c1";
+            pregunta.style.display = "none";
             btnNo.style.display = "none";
-            btnSi.style.fontSize = "30px";
-            btnSi.innerText = "¡Te amo! ✨";
+            
+            // Resetear estilos por si se volvió gigante
+            btnSi.style.position = "relative";
+            btnSi.style.top = "0";
+            btnSi.style.left = "0";
+            btnSi.style.transform = "none";
+            btnSi.style.width = "auto";
+            btnSi.style.height = "auto";
+            
+            document.body.innerHTML = `
+                <h1 style="font-size: 40px;">¡SABÍA QUE DIRÍAS QUE SÍ! 😍❤️</h1>
+                <div style="font-size: 80px;">💍</div>
+            `;
+            document.body.style.backgroundColor = "#ffb3c1";
         });
     </script>
 </body>
