@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi novia?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #ffe6e6;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        h1 { color: #d63384; }
+
+        .botones {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        #si {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #no {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="pregunta">¿Quieres ser mi novia? ❤️</h1>
+    
+    <div class="botones">
+        <button id="si">SÍ</button>
+        <button id="no">NO</button>
+    </div>
+
+    <script>
+        const btnSi = document.getElementById('si');
+        const btnNo = document.getElementById('no');
+        const pregunta = document.getElementById('pregunta');
+
+        let fontSizeSi = 18;
+        let paddingSi = 15;
+
+        btnNo.addEventListener('click', () => {
+            // Aumentar tamaño del botón SÍ
+            fontSizeSi += 15;
+            paddingSi += 10;
+            
+            btnSi.style.fontSize = fontSizeSi + 'px';
+            btnSi.style.padding = paddingSi + 'px';
+
+            // Opcional: Cambiar el texto del botón NO para hacerlo más divertido
+            const frasesNo = ["¿Estás segura?", "Piénsalo bien...", "¡Oye! 🥺", "Me vas a romper el corazón", "Di que síii"];
+            btnNo.innerText = frasesNo[Math.floor(Math.random() * frasesNo.length)];
+        });
+
+        btnSi.addEventListener('click', () => {
+            pregunta.innerText = "¡SABÍA QUE DIRÍAS QUE SÍ! 😍❤️";
+            document.body.style.backgroundColor = "#ffb3c1";
+            btnNo.style.display = "none";
+            btnSi.style.fontSize = "30px";
+            btnSi.innerText = "¡Te amo! ✨";
+        });
+    </script>
+</body>
+</html>
